@@ -1,16 +1,16 @@
 const uuid = require('uuid/v4');
-const { validationResult } = require('express-validator');
+const {validationResult} = require('express-validator');
 
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
 
 const DUMMY_USERS = [
-  {
-    id: 'u1',
-    name: 'Max Schwarz',
-    email: 'test@test.com',
-    password: 'testers'
-  }
+    {
+        id: 'u1',
+        name: 'Max Schwarz',
+        email: 'test@test.com',
+        password: 'testers'
+    }
 ];
 
 const getUsers = async (req, res, next) => {
@@ -28,15 +28,15 @@ const getUsers = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-      return next(
-          new HttpError('Invalid inputs passed, please check your data.', 422)
-      );
-  }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return next(
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        );
+    }
     const {name, email, password, places} = req.body;
 
-    let existingUser
+    let existingUser;
     try {
         existingUser = await User.findOne({email: email})
     } catch (err) {
@@ -57,7 +57,7 @@ const signup = async (req, res, next) => {
 
     const createdUser = new User({
         name,
-    email,
+        email,
         image: 'https://live.staticflickr.com/7631/26849088292_36fc52ee90_b.jpg',
         password,
         places
@@ -77,7 +77,7 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-  const { email, password } = req.body;
+    const {email, password} = req.body;
 
     let existingUser;
 
@@ -97,9 +97,9 @@ const login = async (req, res, next) => {
             401
         );
         return next(error);
-  }
+    }
 
-  res.json({message: 'Logged in!'});
+    res.json({message: 'Logged in!'});
 };
 
 exports.getUsers = getUsers;
